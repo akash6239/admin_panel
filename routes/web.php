@@ -30,7 +30,8 @@ Route::group(['prefix' => 'admin', 'middleware'=>['AdminAuth']],function(){
     Route::get('/product-view', [ProductsController::class, "productview"])->name('productview');
     Route::get('/product-delete/{id}', [ProductsController::class, "delete"])->name('product.delete');
     Route::get('/product-edit/{id}', [ProductsController::class, "edit"])->name('product.edit');
-    Route::post('productupdate', [ProductsController::class, "productupdate"])->name('productupdate');
+    Route::put('/productupdate/{id}', [ProductsController::class, "productupdate"])->name('product.update');
+    Route::get('product/change-status/{id}', [ProductsController::class, "changestatus"])->name('change.status');
     Route::post('/import', [ProductsController::class, "import"])->name('products.import');
     // ..................................................
 

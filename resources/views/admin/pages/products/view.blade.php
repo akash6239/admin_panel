@@ -53,6 +53,7 @@
                 <th>Category</th>
                 <th>Packaging</th>
                 <th>Composition</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -66,11 +67,18 @@
                 <td>{{$data->product_name}}</td>
                 <td>
                     @foreach ($data->categories as $item2)
-                        <span class="badge text-bg-primary">{{$item2->category_name}}</span>
+                        <span class="badge rounded-pill text-bg-primary">{{$item2->category_name}}</span>
                     @endforeach
                 </td>
                 <td>{{$data->product_packaging}}</td>
                 <td>{{$data->product_composition}}</td>
+                <td>
+                    @if($data->status)
+                        <a href="{{ route('change.status',$data->id) }}" onclick="return confirm('Are you sure you want to change status of this Product?')" class="badge text-bg-success">Active</a>
+                    @else
+                        <a href="{{ route('change.status',$data->id) }}" onclick="return confirm('Are you sure you want to change status of this Product?')" class="badge text-bg-danger">Inactive</a>
+                    @endif
+                </td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <a href="{{ route('product.edit', $data->id) }}" class="btn btn-success btn-sm">

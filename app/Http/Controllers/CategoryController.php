@@ -105,10 +105,8 @@ class CategoryController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
     
-        // Retrieve the category to be updated
         $category = Category::findOrFail($request->input('id'));
     
-        // Prepare update data
         $updateData = [
             'category_name' => $request->input('category_name'),
             'slug' => $request->input('slug'),
@@ -134,10 +132,8 @@ class CategoryController extends Controller
             $updateData['category_image'] = $filename;
         }
     
-        // Update category with new data
         $category->update($updateData);
     
-        // Redirect back with a success message
         return redirect()->route('category')->with('status', 'Category Updated Successfully!');
     }
 

@@ -7,7 +7,8 @@
         </div>
     </div>
 
-    <form action="{{route('product')}}" method="post" enctype="multipart/form-data"> @csrf
+    <form action="{{route('product.update', $product->id)}}" method="post" enctype="multipart/form-data"> @csrf
+        @method('PUT')
     <div class="row">
         <div class="col-lg-9">
             <div class="card px-2 py-2">
@@ -16,14 +17,14 @@
                         <div class="mb-3">
                             <label for="example-input-normal" class="form-label">Product Name</label>
                             <input type="text" id="example-input-normal" name="product_name" class="form-control" value="{{$product->product_name}}">
-                            {!! $errors->first('product_name', '<p style="color:red; font-size:14px;">:message</p>') !!}
+                            @error('product_name')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label for="example-input-normal" class="form-label">Product Slug</label>
-                            <input type="text" id="example-input-normal" name="product_name" class="form-control" value="{{$product->product_slug}}">
-                            {!! $errors->first('product_name', '<p style="color:red; font-size:14px;">:message</p>') !!}
+                            <input type="text" id="example-input-normal" name="product_slug" class="form-control" value="{{$product->product_slug}}">
+                            @error('product_slug')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
                 </div>
@@ -79,6 +80,7 @@
                                                         <label class="col-md-3 col-form-label" for="confirm">SKU</label>
                                                         <div class="col-md-9">
                                                             <input type="text" id="sku" name="sku" class="form-control" value="{{$product->sku}}">
+                                                            @error('sku')<span class="text-danger">{{ $message }}</span>@enderror
                                                         </div>
                                                     </div>
 
@@ -86,6 +88,7 @@
                                                         <label class="col-md-3 col-form-label" for="regular_price">Regular price (₹)</label>
                                                         <div class="col-md-9">
                                                             <input type="text" class="form-control" id="regular_price" name="regular_price" value="{{$product->regular_price}}">
+                                                            @error('regular_price')<span class="text-danger">{{ $message }}</span>@enderror
                                                         </div>
                                                     </div>
 
@@ -93,6 +96,7 @@
                                                         <label class="col-md-3 col-form-label" for="sale_price"> Sale price (₹)</label>
                                                         <div class="col-md-9">
                                                             <input type="text" id="sale_price" name="sale_price" class="form-control" value="{{$product->sale_price}}">
+                                                            @error('sale_price')<span class="text-danger">{{ $message }}</span>@enderror
                                                         </div>
                                                     </div>
 
@@ -100,6 +104,7 @@
                                                         <label class="col-md-3 col-form-label" for="product_packaging"> Product Packaging</label>
                                                         <div class="col-md-9">
                                                             <input type="text" id="product_packaging" name="product_packaging" class="form-control" value="{{$product->product_packaging }}">
+                                                            @error('product_packaging')<span class="text-danger">{{ $message }}</span>@enderror
                                                         </div>
                                                     </div>
 
@@ -107,6 +112,7 @@
                                                         <label class="col-md-3 col-form-label" for="product_composition"> Product Composition</label>
                                                         <div class="col-md-9">
                                                             <input type="text" id="product_composition" name="product_composition" class="form-control" value="{{$product->product_composition}}">
+                                                            @error('product_composition')<span class="text-danger">{{ $message }}</span>@enderror
                                                         </div>
                                                     </div>
 
@@ -125,6 +131,7 @@
                                                         <label class="col-md-3 col-form-label" for="meta_title">Meta Title</label>
                                                         <div class="col-md-9">
                                                             <input type="text" id="meta_title" name="meta_title" class="form-control" value="{{$product->meta_title}}">
+                                                            @error('meta_title')<span class="text-danger">{{ $message }}</span>@enderror
                                                         </div>
                                                     </div>
 
@@ -132,6 +139,7 @@
                                                         <label class="col-md-3 col-form-label" for="meta_keywords">Meta Keywords</label>
                                                         <div class="col-md-9">
                                                             <input type="text" class="form-control" id="meta_keywords" name="meta_keywords" value="{{$product->meta_keywords}}">
+                                                            @error('meta_keywords')<span class="text-danger">{{ $message }}</span>@enderror
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
@@ -140,6 +148,7 @@
                                                            <textarea name="meta_description" id="" class="form-control" value="{{$product->meta_description}}">
                                                             {{$product->meta_description}}
                                                            </textarea>
+                                                           @error('meta_description')<span class="text-danger">{{ $message }}</span>@enderror
                                                         </div>
                                                     </div>
 
@@ -147,6 +156,7 @@
                                                         <label class="col-md-3 col-form-label" for="meta_image"> Meta Image</label>
                                                         <div class="col-md-9">
                                                             <input type="file" id="meta_image" name="meta_image" class="form-control">
+                                                            @error('meta_image')<span class="text-danger">{{ $message }}</span>@enderror
                                                         </div>
                                                     </div>
 
@@ -180,6 +190,7 @@
                             </option>
                         @endforeach
                     </select>
+                    @error('product_categories')<span class="text-danger">{{ $message }}</span>@enderror
 
                     </div>
                 </div>
@@ -200,7 +211,8 @@
              <div class="card">
               <div class="card-body">
                  <h5 class="border-bottom pb-1">Edit Product Image</h5>
-                    <input type="file" name="product_image[]" multiple>
+                    <input type="file" name="product_image">
+                    @error('product_image')<span class="text-danger">{{ $message }}</span>@enderror
               </div>
             </div>
         </div>

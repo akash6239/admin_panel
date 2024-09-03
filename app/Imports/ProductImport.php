@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\Products;
+use App\Models\Product;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -32,7 +32,7 @@ class ProductImport implements ToModel
 
         $productSlug = Str::slug($productName);
        // Check if a product with the same combination of fields already exists
-       $exists = Products::where('product_name', $productName)
+       $exists = Product::where('product_name', $productName)
        ->where('product_slug', $productSlug)
        ->where('product_category', $productcategory)
        ->where('product_composition', $productComposition)
@@ -43,7 +43,7 @@ class ProductImport implements ToModel
             Log::info('Row skipped due to existing product:', $row);
             return null; // Skip this row
         }
-        return new Products([
+        return new Product([
             'product_name'        => $productName,
             'product_slug'        => $productSlug,
             'product_category' =>  $productcategory,

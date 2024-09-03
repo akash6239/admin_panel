@@ -14,7 +14,6 @@ class Product extends Model
         'sku',
         'sale_price',
         'regular_price',
-        'product_category',
         'product_packaging',
         'product_composition',
         'meta_title',
