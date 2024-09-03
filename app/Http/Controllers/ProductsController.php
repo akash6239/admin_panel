@@ -250,21 +250,57 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    // public function delete(Request $request, $id)
+    // {
+
+    //     // delete product
+    //     try {
+
+    //         $product = Product::findOrFail($id);
+    //         $product->categories()->detach();
+    //         $product->delete();
+    //         return redirect()->back()->with('status', 'Product deleted successfully!');
+
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->withErrors(['error' => 'Failed to delete the product.']);
+    //     }
+    // }
+
+
     public function delete(Request $request, $id)
-    {
+{
+    // Find the product or fail
+    $product = Product::findOrFail($id);
 
-        // delete product
-        try {
+    if ($product) {
+        // Define paths for product image and meta image
+        $productImagePath = 'photos/image/' . $product->product_image;
+        $metaImagePath = 'photos/image/' . $product->meta_image;
 
-            $product = Product::findOrFail($id);
-            $product->categories()->detach();
-            $product->delete();
-            return redirect()->back()->with('status', 'Product deleted successfully!');
-
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'Failed to delete the product.']);
+        // Delete product image if it exists
+        if ($product->product_image && file_exists(public_path($productImagePath))) {
+            unlink(public_path($productImagePath));
         }
+
+        // Delete meta image if it exists
+        if ($product->meta_image && file_exists(public_path($metaImagePath))) {
+            unlink(public_path($metaImagePath));
+        }
+
+        // Detach all related categories
+        $product->categories()->detach();
+
+        // Delete the product record
+        $product->delete();
+
+        // Redirect with success message
+        return redirect()->back()->with(['status' => 'Product Deleted Successfully!']);
     }
+
+    // Redirect with error message if product not found
+    return redirect()->back()->withErrors('Product not found');
+}
+
 
     // product change status
     public function changestatus($id)
