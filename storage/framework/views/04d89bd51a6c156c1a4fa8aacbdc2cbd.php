@@ -52,6 +52,7 @@
                 <th>Category</th>
                 <th>Packaging</th>
                 <th>Composition</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -65,11 +66,18 @@
                 <td><?php echo e($data->product_name); ?></td>
                 <td>
                     <?php $__currentLoopData = $data->categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item2): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <span class="badge text-bg-primary"><?php echo e($item2->category_name); ?></span>
+                        <span class="badge rounded-pill text-bg-primary"><?php echo e($item2->category_name); ?></span>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </td>
                 <td><?php echo e($data->product_packaging); ?></td>
                 <td><?php echo e($data->product_composition); ?></td>
+                <td>
+                    <?php if($data->status): ?>
+                        <a href="<?php echo e(route('change.status',$data->id)); ?>" onclick="return confirm('Are you sure you want to change status of this Product?')" class="badge text-bg-success">Active</a>
+                    <?php else: ?>
+                        <a href="<?php echo e(route('change.status',$data->id)); ?>" onclick="return confirm('Are you sure you want to change status of this Product?')" class="badge text-bg-danger">Inactive</a>
+                    <?php endif; ?>
+                </td>
                 <td>
                     <div class="btn-group" role="group" aria-label="Basic example">
                         <a href="<?php echo e(route('product.edit', $data->id)); ?>" class="btn btn-success btn-sm">

@@ -6,7 +6,8 @@
         </div>
     </div>
 
-    <form action="<?php echo e(route('product')); ?>" method="post" enctype="multipart/form-data"> <?php echo csrf_field(); ?>
+    <form action="<?php echo e(route('product.update', $product->id)); ?>" method="post" enctype="multipart/form-data"> <?php echo csrf_field(); ?>
+        <?php echo method_field('PUT'); ?>
     <div class="row">
         <div class="col-lg-9">
             <div class="card px-2 py-2">
@@ -15,16 +16,28 @@
                         <div class="mb-3">
                             <label for="example-input-normal" class="form-label">Product Name</label>
                             <input type="text" id="example-input-normal" name="product_name" class="form-control" value="<?php echo e($product->product_name); ?>">
-                            <?php echo $errors->first('product_name', '<p style="color:red; font-size:14px;">:message</p>'); ?>
-
+                            <?php $__errorArgs = ['product_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label for="example-input-normal" class="form-label">Product Slug</label>
-                            <input type="text" id="example-input-normal" name="product_name" class="form-control" value="<?php echo e($product->product_slug); ?>">
-                            <?php echo $errors->first('product_name', '<p style="color:red; font-size:14px;">:message</p>'); ?>
-
+                            <input type="text" id="example-input-normal" name="product_slug" class="form-control" value="<?php echo e($product->product_slug); ?>">
+                            <?php $__errorArgs = ['product_slug'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
                 </div>
@@ -80,6 +93,14 @@
                                                         <label class="col-md-3 col-form-label" for="confirm">SKU</label>
                                                         <div class="col-md-9">
                                                             <input type="text" id="sku" name="sku" class="form-control" value="<?php echo e($product->sku); ?>">
+                                                            <?php $__errorArgs = ['sku'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                         </div>
                                                     </div>
 
@@ -87,6 +108,14 @@
                                                         <label class="col-md-3 col-form-label" for="regular_price">Regular price (₹)</label>
                                                         <div class="col-md-9">
                                                             <input type="text" class="form-control" id="regular_price" name="regular_price" value="<?php echo e($product->regular_price); ?>">
+                                                            <?php $__errorArgs = ['regular_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                         </div>
                                                     </div>
 
@@ -94,6 +123,14 @@
                                                         <label class="col-md-3 col-form-label" for="sale_price"> Sale price (₹)</label>
                                                         <div class="col-md-9">
                                                             <input type="text" id="sale_price" name="sale_price" class="form-control" value="<?php echo e($product->sale_price); ?>">
+                                                            <?php $__errorArgs = ['sale_price'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                         </div>
                                                     </div>
 
@@ -101,6 +138,14 @@
                                                         <label class="col-md-3 col-form-label" for="product_packaging"> Product Packaging</label>
                                                         <div class="col-md-9">
                                                             <input type="text" id="product_packaging" name="product_packaging" class="form-control" value="<?php echo e($product->product_packaging); ?>">
+                                                            <?php $__errorArgs = ['product_packaging'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                         </div>
                                                     </div>
 
@@ -108,6 +153,14 @@
                                                         <label class="col-md-3 col-form-label" for="product_composition"> Product Composition</label>
                                                         <div class="col-md-9">
                                                             <input type="text" id="product_composition" name="product_composition" class="form-control" value="<?php echo e($product->product_composition); ?>">
+                                                            <?php $__errorArgs = ['product_composition'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                         </div>
                                                     </div>
 
@@ -126,6 +179,14 @@
                                                         <label class="col-md-3 col-form-label" for="meta_title">Meta Title</label>
                                                         <div class="col-md-9">
                                                             <input type="text" id="meta_title" name="meta_title" class="form-control" value="<?php echo e($product->meta_title); ?>">
+                                                            <?php $__errorArgs = ['meta_title'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                         </div>
                                                     </div>
 
@@ -133,6 +194,14 @@
                                                         <label class="col-md-3 col-form-label" for="meta_keywords">Meta Keywords</label>
                                                         <div class="col-md-9">
                                                             <input type="text" class="form-control" id="meta_keywords" name="meta_keywords" value="<?php echo e($product->meta_keywords); ?>">
+                                                            <?php $__errorArgs = ['meta_keywords'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                         </div>
                                                     </div>
                                                     <div class="row mb-3">
@@ -142,6 +211,14 @@
                                                             <?php echo e($product->meta_description); ?>
 
                                                            </textarea>
+                                                           <?php $__errorArgs = ['meta_description'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                         </div>
                                                     </div>
 
@@ -149,6 +226,14 @@
                                                         <label class="col-md-3 col-form-label" for="meta_image"> Meta Image</label>
                                                         <div class="col-md-9">
                                                             <input type="file" id="meta_image" name="meta_image" class="form-control">
+                                                            <?php $__errorArgs = ['meta_image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                                         </div>
                                                     </div>
 
@@ -183,6 +268,14 @@
                             </option>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
+                    <?php $__errorArgs = ['product_categories'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
 
                     </div>
                 </div>
@@ -203,7 +296,15 @@
              <div class="card">
               <div class="card-body">
                  <h5 class="border-bottom pb-1">Edit Product Image</h5>
-                    <input type="file" name="product_image[]" multiple>
+                    <input type="file" name="product_image">
+                    <?php $__errorArgs = ['product_image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
               </div>
             </div>
         </div>
