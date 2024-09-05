@@ -20,7 +20,7 @@ class Product extends Model
         'meta_keywords',
         'meta_description',
         'product_image',
-        // 'product_gallery',
+        'visual_image',
         'meta_image',
         'status',
         'description',

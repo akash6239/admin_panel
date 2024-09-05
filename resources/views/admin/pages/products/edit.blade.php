@@ -3,7 +3,7 @@
 <div class="container mt-2">
     <div class="row px-2">
         <div class="card px-2 py-2">
-            <h5>Edit Product</h5>
+            <h5>Dashboard / Edit Product</h5>
         </div>
     </div>
 
@@ -16,14 +16,14 @@
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label for="example-input-normal" class="form-label">Product Name</label>
-                            <input type="text" id="example-input-normal" name="product_name" class="form-control" value="{{$product->product_name}}">
+                            <input type="text" id="product_name" name="product_name" class="form-control" value="{{$product->product_name}}">
                             @error('product_name')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label for="example-input-normal" class="form-label">Product Slug</label>
-                            <input type="text" id="example-input-normal" name="product_slug" class="form-control" value="{{$product->product_slug}}">
+                            <input type="text" id="product_slug" name="product_slug" class="form-control" value="{{$product->product_slug}}">
                             @error('product_slug')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                     <div class="card">
                         <div class="card-body">
 
-                            <h4 class="header-title mb-3"> Product Deta</h4>
+                            <h4 class="header-title mb-3"> Product Data</h4>
                                 <div id="basicwizard">
 
                                     <ul class="nav nav-pills bg-light nav-justified form-wizard-header mb-4" role="tablist">
@@ -198,21 +198,37 @@
               <!-- .................product gallery........................ -->
               <div class="card">
                 <div class="card-body">
-                   <h5 class="border-bottom pb-1">Product image</h5>
-  
-                   <input type="hidden" name="product_gallery">
-                    <div class="product_image border">
-                      <img src="{{ asset('photos/image/' . $product->product_image) }}" alt="{{ $product->product_name }}" class="w-100">
-                   </div>
+                   <h5 class="border-bottom pb-1">Edit Product Image</h5>
+                   <div class="product_image border mb-2 text-center">
+                        <img src="{{ asset('photos/image/' . $product->product_image) }}" alt="{{ $product->product_name }}" width="200px">
+                    </div>
+                   <input type="file" name="product_image">
+                    @error('product_image')<span class="text-danger">{{ $message }}</span>@enderror
                 </div>
               </div>
               <!-- ................................ -->
              <!-- ........................................ -->
              <div class="card">
               <div class="card-body">
-                 <h5 class="border-bottom pb-1">Edit Product Image</h5>
-                    <input type="file" name="product_image">
-                    @error('product_image')<span class="text-danger">{{ $message }}</span>@enderror
+                 <h5 class="border-bottom pb-1">Edit Visual Image</h5>
+                 <div class="visual_images border mb-2 p-2">
+                    @if ($product->visual_image)
+                        @php
+                            $visualImages = json_decode($product->visual_image, true);
+                        @endphp
+                        @if (is_array($visualImages) && !empty($visualImages))
+                            @foreach ($visualImages as $image)
+                                <img src="{{ asset('photos/image/' . $image) }}" alt="Visual image" class="img-fluid border mb-2" width="100px">
+                            @endforeach
+                        @else
+                            <p>No visual images available</p>
+                        @endif
+                    @else
+                        <p>No visual images available</p>
+                    @endif
+                </div>
+                    <input type="file" name="visual_image[]" multiple>
+                    @error('visual_image')<span class="text-danger">{{ $message }}</span>@enderror
               </div>
             </div>
         </div>
@@ -240,4 +256,24 @@
         document.getElementById("quill_html").value = quill.root.innerHTML;
     });
 </script>
+<script>
+    function generateSlug(text) {
+    return text
+        .toString()                    // Convert to string
+        .toLowerCase()                 // Convert to lowercase
+        .trim()                        // Remove leading and trailing spaces
+        .replace(/\s+/g, '-')          // Replace spaces with hyphens
+        .replace(/[^\w\-]+/g, '')      // Remove all non-word characters
+        .replace(/\-\-+/g, '-')        // Replace multiple hyphens with a single hyphen
+        .replace(/^-+/, '')            // Remove hyphens from the beginning
+        .replace(/-+$/, '');           // Remove hyphens from the end
+}
+
+// Attach the blur event listener to the title input
+document.getElementById('product_name').addEventListener('blur', function() {
+    const title = this.value;
+    const slug = generateSlug(title);
+    document.getElementById('product_slug').value = slug;
+});
+ </script>
 @endpush

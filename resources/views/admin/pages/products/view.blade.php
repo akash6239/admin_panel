@@ -1,8 +1,8 @@
 @extends('admin.layout.sidebar')
 @section('content')
 <div class="container mt-2">
-     <div class="row px-2">
-        <div class="py-1">
+     <div class="row">
+        <div class="card py-1">
             @if(session('status'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>{{ session('status') }}</strong>
@@ -10,10 +10,11 @@
               </div>
             @elseif(session('error'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>{{ session('status') }}</strong>
+                <strong>{{ session('error') }}</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
-                <h5 class="px-1 py-1 text-danger">{{ session('error') }}</h5>
+            @else
+                <h5 class="px-1 py-1">Dashboard / View Product</h5>
             @endif
         </div>
     </div>

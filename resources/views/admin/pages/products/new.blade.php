@@ -2,7 +2,7 @@
 @section('content')
 <div class="container mt-2">
     <div class="row px-2">
-        <div class=" py-1">
+        <div class=" card py-1">
             @if(session('status'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>{{ session('status') }}</strong>
@@ -14,7 +14,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
             @else
-                <h4>Add New Product</h4>
+                <h5>Dashboard / Add New Product</h5>
             @endif
         </div>
     </div>
@@ -213,26 +213,22 @@
                  <h5 class="border-bottom pb-1">Product Image</h5>
 
                   <div class="product_image border p-2">
-                    <input type="hidden" name="product_image">
-                    {{-- <label for="example-input-normal" class="form-label">Image : </label> --}}
                     <input type="file" id="image" name="product_image" class="form-control">
                     @error('product_image')<div class="text-danger mt-2">{{ $message }}</div>@enderror
-                    {{-- <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-zIzPCo2-0ZTKBMFBpVciRU5jP57eDCrbK4BCMGga0CLnqzU2UL_b8pkxDvZjpdEcmC4&usqp=CAU" alt="not found" class="w-100"> --}}
                  </div>
               </div>
             </div>
             <!-- .................product gallery........................ -->
-            {{-- <div class="card">
-              <div class="card-body">
-                 <h5 class="border-bottom pb-1">Product Gallery</h5>
-
-                 <input type="hidden" name="product_gallery">
-                 @error('product_gallery')<div class="text-danger mt-2">{{ $message }}</div>@enderror
-                  <div class="product_image border">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-zIzPCo2-0ZTKBMFBpVciRU5jP57eDCrbK4BCMGga0CLnqzU2UL_b8pkxDvZjpdEcmC4&usqp=CAU" alt="not found" class="w-100">
-                 </div>
+            <div class="card">
+                <div class="card-body">
+                   <h5 class="border-bottom pb-1">Visual Image</h5>
+  
+                    <div class="product_image border p-2">
+                      <input type="file" id="image" name="visual_image[]" class="form-control" multiple>
+                      @error('visual_image')<div class="text-danger mt-2">{{ $message }}</div>@enderror
+                   </div>
+                </div>
               </div>
-            </div> --}}
             <!-- ................................ -->
         </div>
     </div>
@@ -253,10 +249,25 @@
 <script src="{{ asset('backend/editor/jquery.bootstrap.wizard.min.js')}}"></script>
 <script src="{{ asset('backend/editor/form-wizard.init.js')}}"></script>
 <script>
-    var quill = new Quill('#snow-editor', {
-    });
-   quill.on('text-change', function(delta, oldDelta, source) {
-        document.getElementById("quill_html").value = quill.root.innerHTML;
+    document.addEventListener('DOMContentLoaded', function() {
+        var quill = new Quill('#snow-editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    ['link'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Sync editor content with hidden input field
+        quill.on('text-change', function(delta, oldDelta, source) {
+            document.getElementById("quill_html").value = quill.root.innerHTML;
+        });
     });
 </script>
 <script>

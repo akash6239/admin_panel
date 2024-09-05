@@ -7,7 +7,7 @@
                 @if(session('status'))
                 <h5 class="px-1 py-1 text-success">{{ session('status') }}</h5>
                 @else
-                    <h4>categories</h4>
+                    <h4>Dashboard / categories</h4>
                 @endif
             </div>
         </div>

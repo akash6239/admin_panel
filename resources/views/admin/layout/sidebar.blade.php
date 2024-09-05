@@ -116,7 +116,7 @@
                         </a>
                     </li>
 
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="#menuCrm" data-bs-toggle="collapse" class="menu-link">
                             <span class="menu-icon"><i class="mdi mdi-account-multiple-outline"></i></span>
                             <span class="menu-text"> Article </span>
@@ -143,7 +143,7 @@
                                
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
 
                     <li class="menu-item">
                         <a href="{{route('category')}}"  class="menu-link">
@@ -152,7 +152,7 @@
                         </a>
                     </li>
 
-                    <li class="menu-item">
+                    {{-- <li class="menu-item">
                         <a href="#menuEmail" data-bs-toggle="collapse" class="menu-link">
                             <span class="menu-icon"><i class="mdi mdi-email-multiple-outline"></i></span>
                             <span class="menu-text"> Users </span>
@@ -177,7 +177,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </li>
+                    </li> --}}
 
 
                     <li class="menu-item">
@@ -190,12 +190,12 @@
                             <ul class="sub-menu">
                                 <li class="menu-item">
                                     <a href="{{route('productview')}}" class="menu-link">
-                                        <span class="menu-text">All Products</span>
+                                        <span class="menu-text">View Products</span>
                                     </a>
                                 </li>
                                 <li class="menu-item">
                                     <a href="{{route('product')}}" class="menu-link">
-                                        <span class="menu-text">Add New</span>
+                                        <span class="menu-text">Add Product</span>
                                     </a>
                                 </li>
                                 
@@ -212,224 +212,31 @@
                     <li class="menu-item">
                         <a href="#menuTasks" data-bs-toggle="collapse" class="menu-link">
                             <span class="menu-icon"><i class="mdi mdi-clipboard-multiple-outline"></i></span>
-                            <span class="menu-text"> Tasks </span>
+                            <span class="menu-text"> Blogs </span>
                             <span class="menu-arrow"></span>
                         </a>
                         <div class="collapse" id="menuTasks">
                             <ul class="sub-menu">
                                 <li class="menu-item">
-                                    <a href="task-list.html" class="menu-link">
-                                        <span class="menu-text">List</span>
+                                    <a href="{{ route('blogview') }}" class="menu-link">
+                                        <span class="menu-text">View Blogs</span>
                                     </a>
                                 </li>
                                 <li class="menu-item">
-                                    <a href="task-details.html" class="menu-link">
-                                        <span class="menu-text">Details</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="task-kanban-board.html" class="menu-link">
-                                        <span class="menu-text">Kanban Board</span>
+                                    <a href="{{ route('blogs') }}" class="menu-link">
+                                        <span class="menu-text">Add Blogs</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-
-                    <li class="menu-item">
-                        <a href="#menuContacts" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"><i class="mdi mdi-book-account-outline"></i></span>
-                            <span class="menu-text"> Contacts </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="menuContacts">
-                            <ul class="sub-menu">
-                                <li class="menu-item">
-                                    <a href="contacts-list.html" class="menu-link">
-                                        <span class="menu-text">Members List</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="contacts-profile.html" class="menu-link">
-                                        <span class="menu-text">Profile</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="menu-item">
-                        <a href="#menuTickets" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"><i class="mdi mdi-lifebuoy"></i></span>
-                            <span class="menu-text"> Tickets </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="menuTickets">
-                            <ul class="sub-menu">
-                                <li class="menu-item">
-                                    <a href="tickets-list.html" class="menu-link">
-                                        <span class="menu-text">List</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="tickets-detail.html" class="menu-link">
-                                        <span class="menu-text">Detail</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-
-
-
-
-                    <li class="menu-item">
-                        <a href="#menuAuth" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"><i class="mdi mdi-account-circle-outline"></i></span>
-                            <span class="menu-text"> Auth Pages </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse collapse-md" id="menuAuth">
-                            <ul class="sub-menu">
-                                <li class="menu-item">
-                                    <a href="auth-confirm-mail-2.html" class="menu-link">
-                                        <span class="menu-text">Confirm Mail 2</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="menu-item">
-                        <a href="#menuExpages" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"><i class="mdi mdi-text-box-multiple-outline"></i></span>
-                            <span class="menu-text"> Extra Pages </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="menuExpages">
-                            <ul class="sub-menu">
-                               
-                                
-                               
-                                <li class="menu-item">
-                                    <a href="pages-404-alt.html" class="menu-link">
-                                        <span class="menu-text">Error 404-alt</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-
-
-                    <li class="menu-item">
-                        <a href="#menuBaseui" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"><i class="mdi mdi-black-mesa"></i></span>
-                            <span class="menu-text"> Base UI </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse collapse-md" id="menuBaseui">
-                            <ul class="sub-menu">
-                                <li class="menu-item">
-                                    <a href="ui-grid.html" class="menu-link">
-                                        <span class="menu-text">Grid</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-
-
-
-                    <li class="menu-item">
-                        <a href="#menuIcons" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"><i class="mdi mdi-bullseye"></i></span>
-                            <span class="menu-text"> Icons </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="menuIcons">
-                            <ul class="sub-menu">
-                                <li class="menu-item">
-                                    <a href="icons-simple-line.html" class="menu-link">
-                                        <span class="menu-text">Simple Line</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="icons-weather.html" class="menu-link">
-                                        <span class="menu-text">Weather</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="menu-item">
-                        <a href="#menuForms" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"><i class="mdi mdi-bookmark-multiple-outline"></i></span>
-                            <span class="menu-text"> Marketing </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="menuForms">
-                            <ul class="sub-menu">
-                                <li class="menu-item">
-                                    <a href="forms-x-editable.html" class="menu-link">
-                                        <span class="menu-text">Locations</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="forms-image-crop.html" class="menu-link">
-                                        <span class="menu-text">Currency</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="menu-item">
-                        <a href="#menuTables" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"><i class="mdi mdi-table"></i></span>
-                            <span class="menu-text"> Tables </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="menuTables">
-                            <ul class="sub-menu">
-                               
-                                <li class="menu-item">
-                                    <a href="tables-jsgrid.html" class="menu-link">
-                                        <span class="menu-text">JsGrid Tables</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <li class="menu-item">
-                        <a href="#menuCharts" data-bs-toggle="collapse" class="menu-link">
-                            <span class="menu-icon"><i class="mdi mdi-poll"></i></span>
-                            <span class="menu-text"> Settings </span>
-                            <span class="menu-arrow"></span>
-                        </a>
-                        <div class="collapse" id="menuCharts">
-                            <ul class="sub-menu">
-                            <li class="menu-item">
-                                    <a href="charts-knob.html" class="menu-link">
-                                        <span class="menu-text">Location</span>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="charts-knob.html" class="menu-link">
-                                        <span class="menu-text">Currency</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                   
-
                     
+                    <li class="menu-item">
+                        <a href="{{ route('enquiry') }}"  class="menu-link">
+                            <span class="menu-icon"><i class="mdi mdi-cart-outline"></i></span>
+                            <span class="menu-text"> Enquiries </span>
+                        </a>
+                    </li>
                 </ul>
                 <!--- End Menu -->
                 <div class="clearfix"></div>

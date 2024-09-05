@@ -1,7 +1,7 @@
 <?php $__env->startSection('content'); ?>
 <div class="container mt-2">
-     <div class="row px-2">
-        <div class="py-1">
+     <div class="row">
+        <div class="card py-1">
             <?php if(session('status')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong><?php echo e(session('status')); ?></strong>
@@ -9,10 +9,11 @@
               </div>
             <?php elseif(session('error')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong><?php echo e(session('status')); ?></strong>
+                <strong><?php echo e(session('error')); ?></strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
-                <h5 class="px-1 py-1 text-danger"><?php echo e(session('error')); ?></h5>
+            <?php else: ?>
+                <h5 class="px-1 py-1">Dashboard / View Product</h5>
             <?php endif; ?>
         </div>
     </div>

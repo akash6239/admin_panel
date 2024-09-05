@@ -1,13 +1,14 @@
 <?php
 
+use App\Http\Controllers\EnquiryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAccountController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductsController;
-
-
+use App\Models\Blog;
 
 Route::get('/', [WebController::class, "index"])->name('index');
 Route::get('/sign-in', [AdminController::class, "signin"])->name('signin');
@@ -33,7 +34,19 @@ Route::group(['prefix' => 'admin', 'middleware'=>['AdminAuth']],function(){
     Route::put('/productupdate/{id}', [ProductsController::class, "productupdate"])->name('product.update');
     Route::get('product/change-status/{id}', [ProductsController::class, "changestatus"])->name('change.status');
     Route::post('/import', [ProductsController::class, "import"])->name('products.import');
-    // ..................................................
+    // ..................enquiry................................................................
+    Route::get('/enquiries', [EnquiryController::class, "enquiry"])->name('enquiry');
+    Route::get('/enquiries-delete/{id}', [EnquiryController::class, "delete"])->name('delete.enquiry');
+
+    // .............................blogs................................................................
+    Route::match(['get','post'], '/blogs', [BlogController::class, "blogs"])->name('blogs');
+    Route::get('/blog-view', [BlogController::class, "blogview"])->name('blogview');
+    Route::get('/blog-edit/{id}', [BlogController::class, "edit"])->name('blog.edit');
+    Route::put('/blogupdate/{id}', [BlogController::class, "blogupdate"])->name('blog.update');
+    Route::get('blog/change-status/{id}', [BlogController::class, "changestatus"])->name('blogchange.status');
+    Route::get('/blog-delete/{id}', [BlogController::class, "delete"])->name('blog.delete');
+
+
 
     Route::get('/admin-logout', [AdminController::class, 'logout'])->name('adminlogout');
 });

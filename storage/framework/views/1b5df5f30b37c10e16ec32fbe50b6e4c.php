@@ -1,7 +1,7 @@
 <?php $__env->startSection('content'); ?>
 <div class="container mt-2">
     <div class="row px-2">
-        <div class=" py-1">
+        <div class=" card py-1">
             <?php if(session('status')): ?>
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong><?php echo e(session('status')); ?></strong>
@@ -13,7 +13,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
             <?php else: ?>
-                <h4>Add New Product</h4>
+                <h5>Dashboard / Add New Product</h5>
             <?php endif; ?>
         </div>
     </div>
@@ -296,8 +296,6 @@ unset($__errorArgs, $__bag); ?>
                  <h5 class="border-bottom pb-1">Product Image</h5>
 
                   <div class="product_image border p-2">
-                    <input type="hidden" name="product_image">
-                    
                     <input type="file" id="image" name="product_image" class="form-control">
                     <?php $__errorArgs = ['product_image'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -307,12 +305,27 @@ $message = $__bag->first($__errorArgs[0]); ?><div class="text-danger mt-2"><?php
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                    
                  </div>
               </div>
             </div>
             <!-- .................product gallery........................ -->
-            
+            <div class="card">
+                <div class="card-body">
+                   <h5 class="border-bottom pb-1">Visual Image</h5>
+  
+                    <div class="product_image border p-2">
+                      <input type="file" id="image" name="visual_image[]" class="form-control" multiple>
+                      <?php $__errorArgs = ['visual_image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><div class="text-danger mt-2"><?php echo e($message); ?></div><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                   </div>
+                </div>
+              </div>
             <!-- ................................ -->
         </div>
     </div>
@@ -333,10 +346,25 @@ unset($__errorArgs, $__bag); ?>
 <script src="<?php echo e(asset('backend/editor/jquery.bootstrap.wizard.min.js')); ?>"></script>
 <script src="<?php echo e(asset('backend/editor/form-wizard.init.js')); ?>"></script>
 <script>
-    var quill = new Quill('#snow-editor', {
-    });
-   quill.on('text-change', function(delta, oldDelta, source) {
-        document.getElementById("quill_html").value = quill.root.innerHTML;
+    document.addEventListener('DOMContentLoaded', function() {
+        var quill = new Quill('#snow-editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    ['link'],
+                    ['clean']
+                ]
+            }
+        });
+
+        // Sync editor content with hidden input field
+        quill.on('text-change', function(delta, oldDelta, source) {
+            document.getElementById("quill_html").value = quill.root.innerHTML;
+        });
     });
 </script>
 <script>

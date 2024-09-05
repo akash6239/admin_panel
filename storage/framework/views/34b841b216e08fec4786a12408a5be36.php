@@ -2,11 +2,11 @@
 <div class="container mt-2">
     <div class="row px-2">
         <div class="card px-2 py-2">
-            <h5>Edit Product</h5>
+            <h5>Dashboard / Edit Product</h5>
         </div>
     </div>
 
-    <form action="<?php echo e(route('productupdate'. $product->id)); ?>" method="post" enctype="multipart/form-data"> <?php echo csrf_field(); ?>
+    <form action="<?php echo e(route('product.update', $product->id)); ?>" method="post" enctype="multipart/form-data"> <?php echo csrf_field(); ?>
         <?php echo method_field('PUT'); ?>
     <div class="row">
         <div class="col-lg-9">
@@ -15,7 +15,7 @@
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label for="example-input-normal" class="form-label">Product Name</label>
-                            <input type="text" id="example-input-normal" name="product_name" class="form-control" value="<?php echo e($product->product_name); ?>">
+                            <input type="text" id="product_name" name="product_name" class="form-control" value="<?php echo e($product->product_name); ?>">
                             <?php $__errorArgs = ['product_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -29,7 +29,7 @@ unset($__errorArgs, $__bag); ?>
                     <div class="col-lg-6">
                         <div class="mb-3">
                             <label for="example-input-normal" class="form-label">Product Slug</label>
-                            <input type="text" id="example-input-normal" name="product_slug" class="form-control" value="<?php echo e($product->product_slug); ?>">
+                            <input type="text" id="product_slug" name="product_slug" class="form-control" value="<?php echo e($product->product_slug); ?>">
                             <?php $__errorArgs = ['product_slug'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -65,7 +65,7 @@ unset($__errorArgs, $__bag); ?>
                     <div class="card">
                         <div class="card-body">
 
-                            <h4 class="header-title mb-3"> Product Deta</h4>
+                            <h4 class="header-title mb-3"> Product Data</h4>
                                 <div id="basicwizard">
 
                                     <ul class="nav nav-pills bg-light nav-justified form-wizard-header mb-4" role="tablist">
@@ -283,21 +283,44 @@ unset($__errorArgs, $__bag); ?>
               <!-- .................product gallery........................ -->
               <div class="card">
                 <div class="card-body">
-                   <h5 class="border-bottom pb-1">Product image</h5>
-  
-                   <input type="hidden" name="product_gallery">
-                    <div class="product_image border">
-                      <img src="<?php echo e(asset('photos/image/' . $product->product_image)); ?>" alt="<?php echo e($product->product_name); ?>" class="w-100">
-                   </div>
+                   <h5 class="border-bottom pb-1">Edit Product Image</h5>
+                   <div class="product_image border mb-2 text-center">
+                        <img src="<?php echo e(asset('photos/image/' . $product->product_image)); ?>" alt="<?php echo e($product->product_name); ?>" width="200px">
+                    </div>
+                   <input type="file" name="product_image">
+                    <?php $__errorArgs = ['product_image'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><span class="text-danger"><?php echo e($message); ?></span><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                 </div>
               </div>
               <!-- ................................ -->
              <!-- ........................................ -->
              <div class="card">
               <div class="card-body">
-                 <h5 class="border-bottom pb-1">Edit Product Image</h5>
-                    <input type="file" name="product_image">
-                    <?php $__errorArgs = ['product_image'];
+                 <h5 class="border-bottom pb-1">Edit Visual Image</h5>
+                 <div class="visual_images border mb-2 p-2">
+                    <?php if($product->visual_image): ?>
+                        <?php
+                            $visualImages = json_decode($product->visual_image, true);
+                        ?>
+                        <?php if(is_array($visualImages) && !empty($visualImages)): ?>
+                            <?php $__currentLoopData = $visualImages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $image): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <img src="<?php echo e(asset('photos/image/' . $image)); ?>" alt="Visual image" class="img-fluid border mb-2" width="100px">
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php else: ?>
+                            <p>No visual images available</p>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <p>No visual images available</p>
+                    <?php endif; ?>
+                </div>
+                    <input type="file" name="visual_image[]" multiple>
+                    <?php $__errorArgs = ['visual_image'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -332,6 +355,26 @@ unset($__errorArgs, $__bag); ?>
         document.getElementById("quill_html").value = quill.root.innerHTML;
     });
 </script>
+<script>
+    function generateSlug(text) {
+    return text
+        .toString()                    // Convert to string
+        .toLowerCase()                 // Convert to lowercase
+        .trim()                        // Remove leading and trailing spaces
+        .replace(/\s+/g, '-')          // Replace spaces with hyphens
+        .replace(/[^\w\-]+/g, '')      // Remove all non-word characters
+        .replace(/\-\-+/g, '-')        // Replace multiple hyphens with a single hyphen
+        .replace(/^-+/, '')            // Remove hyphens from the beginning
+        .replace(/-+$/, '');           // Remove hyphens from the end
+}
+
+// Attach the blur event listener to the title input
+document.getElementById('product_name').addEventListener('blur', function() {
+    const title = this.value;
+    const slug = generateSlug(title);
+    document.getElementById('product_slug').value = slug;
+});
+ </script>
 <?php $__env->stopPush(); ?>
 
 <?php echo $__env->make('admin.layout.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH E:\html code\New folder\rednirus_cms\resources\views\admin\pages\products\edit.blade.php ENDPATH**/ ?>

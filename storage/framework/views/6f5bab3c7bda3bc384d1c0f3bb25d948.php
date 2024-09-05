@@ -6,7 +6,7 @@
                 <?php if(session('status')): ?>
                 <h5 class="px-1 py-1 text-success"><?php echo e(session('status')); ?></h5>
                 <?php else: ?>
-                    <h4>categories</h4>
+                    <h4>Dashboard / categories</h4>
                 <?php endif; ?>
             </div>
         </div>

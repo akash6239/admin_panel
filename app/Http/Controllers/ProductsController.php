@@ -31,10 +31,12 @@ class ProductsController extends Controller
                 'meta_title' => 'required',
                 'meta_keywords' => 'required',
                 'meta_description' => 'required',
-                'product_image' => 'required|image|max:1024',
-                'meta_image' => 'required|image|max:1024',
+                'product_image' => 'nullable|image|max:1024',
+                'meta_image' => 'nullable|image|max:1024',
+                'visual_image.*' => 'nullable|image|max:1024',
                 'description' => 'required',
-                'product_categories' => 'required'
+                // 'product_categories' => 'required|array',
+                'product_categories.*' => 'exists:categories,id', // Validate category IDs
             ]);
     
             if ($validator->fails()) {
@@ -57,6 +59,16 @@ class ProductsController extends Controller
                 $metaImageFile->move(public_path('photos/image'), $metaImage);
             }
     
+            // Handle visual images
+            $filenames = [];
+            if ($request->hasFile('visual_image')) {
+                foreach ($request->file('visual_image') as $file) {
+                    $filename = time() . '_' . uniqid() . '_visual.' . $file->getClientOriginalExtension();
+                    $file->move(public_path('photos/image'), $filename);
+                    $filenames[] = $filename;
+                }
+            }
+    
             // Create product
             $product = Product::create([
                 'product_name' => $request->input('product_name'),
@@ -72,15 +84,19 @@ class ProductsController extends Controller
                 'meta_description' => $request->input('meta_description'),
                 'meta_image' => $metaImage,
                 'product_image' => $productImage,
+                'visual_image' => json_encode($filenames), // Store as JSON
             ]);
-            foreach($request->product_categories as $item){
-                ProductCategory::create([
-                    'product_id' => $product->id,
-                    'category_id' => $item
-                ]);
+    
+            // Attach product categories
+            if ($request->has('product_categories')) {
+                foreach ($request->input('product_categories') as $categoryId) {
+                    ProductCategory::create([
+                        'product_id' => $product->id,
+                        'category_id' => $categoryId
+                    ]);
+                }
             }
     
-           
             // Redirect back with success message
             return redirect()->route('productview')->with('status', 'Successfully Added New Product!');
         }
@@ -91,6 +107,7 @@ class ProductsController extends Controller
             'product_category' => $product_category,
         ]);
     }
+    
 
 
     public function import(Request $request)
@@ -109,7 +126,7 @@ class ProductsController extends Controller
      */
     public function productview(Request $request)
     {
-        $products = Product::with('categories')->orderBy('created_at', 'desc')->get();
+        $products = Product::with('categories')->orderBy('id', 'desc')->get();
         $categories = Category::where('status', 1)->get();
         return view('admin.pages.products.view', [
             'products' => $products,
@@ -150,123 +167,113 @@ class ProductsController extends Controller
      * Update the specified resource in storage.
      */
 
-    public function productUpdate(Request $request , $id)
-{
-    // return $request->all();
-
-    // Define the validation rules
-    $validator = Validator::make($request->all(), [
-        'product_name' => 'required',
-        'product_slug' => [
-            'required',
-            'max:255',
-            Rule::unique('products', 'product_slug')->ignore($id),
-        ],
-        'sku' => 'required',
-        'sale_price' => 'required|numeric',
-        'regular_price' => 'required|numeric',
-        'product_packaging' => 'required',
-        'product_composition' => 'required',
-        'meta_title' => 'required',
-        'meta_keywords' => 'required',
-        'meta_description' => 'required',
-        'product_image' => 'nullable|image|max:1024',
-        'meta_image' => 'nullable|image|max:1024',
-        'description' => 'nullable',
-        'product_categories' => 'required|array'
-    ]);
-
-    // If validation fails, redirect back with errors
-    if ($validator->fails()) {
-        return redirect()->back()->withErrors($validator)->withInput();
-    }
-        $product = Product::findOrFail($id);
-
-    $updateData = [
-        'product_name' => $request->input('product_name'),
-        'product_slug' => $request->input('product_slug'),
-        'sku' => $request->input('sku'),
-        'sale_price' => $request->input('sale_price'),
-        'regular_price' => $request->input('regular_price'),
-        'product_packaging' => $request->input('product_packaging'),
-        'product_composition' => $request->input('product_composition'),
-        'meta_title' => $request->input('meta_title'),
-        'meta_keywords' => $request->input('meta_keywords'),
-        'meta_description' => $request->input('meta_description'),
-        'description' => $request->input('description'),
-    ];
-
-    // Handle file uploads if files are provided
-    if ($request->hasFile('product_image')) {
-        // Delete the old image if it exists
-        if ($product->product_image && file_exists(public_path('photos/image/' . $product->product_image))) {
-            unlink(public_path('photos/image/' . $product->product_image));
-        }
-
-        // Store the new product image
-        $file = $request->file('product_image');
-        $filename = 'product_' . time() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('photos/image'), $filename);
-
-        // Add the new image path to update data
-        $updateData['product_image'] = $filename;
-    }
-
-    if ($request->hasFile('meta_image')) {
-        // Delete the old meta image if it exists
-        if ($product->meta_image && file_exists(public_path('photos/image/' . $product->meta_image))) {
-            unlink(public_path('photos/image/' . $product->meta_image));
-        }
-
-        // Store the new meta image
-        $file = $request->file('meta_image');
-        $filename = 'meta_' . time() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('photos/image'), $filename);
-
-        // Add the new image path to update data
-        $updateData['meta_image'] = $filename;
-    }
-
-    // Update the product with the new data
-    $product->update($updateData);
-
-    // Update product categories
-    // Remove existing categories
-    ProductCategory::where('product_id', $product->id)->delete();
-
-    // Add new categories
-    foreach ($request->product_categories as $categoryId) {
-        ProductCategory::create([
-            'product_id' => $product->id,
-            'category_id' => $categoryId
-        ]);
-    }
-
-    // Redirect with a success message
-    return redirect()->route('productview')->with('status', 'Product Updated Successfully!');
-}
+     public function productUpdate(Request $request, $id)
+     {
+         // Validate the request
+         $validator = Validator::make($request->all(), [
+             'product_name' => 'required',
+             'product_slug' => [
+                 'required',
+                 'max:255',
+                 Rule::unique('products', 'product_slug')->ignore($id),
+             ],
+             'sku' => 'required',
+             'sale_price' => 'required|numeric',
+             'regular_price' => 'required|numeric',
+             'product_packaging' => 'required',
+             'product_composition' => 'required',
+             'meta_title' => 'required',
+             'meta_keywords' => 'required',
+             'meta_description' => 'required',
+             'product_image' => 'nullable|image|max:1024',
+             'meta_image' => 'nullable|image|max:1024',
+             'visual_image.*' => 'nullable|image|max:1024',
+             'description' => 'nullable',
+             'product_categories.*' => 'required|array'
+         ]);
+     
+         if ($validator->fails()) {
+             return redirect()->back()->withErrors($validator)->withInput();
+         }
+     
+         $product = Product::findOrFail($id);
+     
+         $updateData = [
+             'product_name' => $request->input('product_name'),
+             'product_slug' => $request->input('product_slug'),
+             'sku' => $request->input('sku'),
+             'sale_price' => $request->input('sale_price'),
+             'regular_price' => $request->input('regular_price'),
+             'product_packaging' => $request->input('product_packaging'),
+             'product_composition' => $request->input('product_composition'),
+             'meta_title' => $request->input('meta_title'),
+             'meta_keywords' => $request->input('meta_keywords'),
+             'meta_description' => $request->input('meta_description'),
+             'description' => $request->input('description'),
+         ];
+     
+         // Handle product image
+         if ($request->hasFile('product_image')) {
+             if ($product->product_image && file_exists(public_path('photos/image/' . $product->product_image))) {
+                 unlink(public_path('photos/image/' . $product->product_image));
+             }
+             $file = $request->file('product_image');
+             $filename = 'product_' . time() . '.' . $file->getClientOriginalExtension();
+             $file->move(public_path('photos/image'), $filename);
+             $updateData['product_image'] = $filename;
+         }
+     
+         // Handle meta image
+         if ($request->hasFile('meta_image')) {
+             if ($product->meta_image && file_exists(public_path('photos/image/' . $product->meta_image))) {
+                 unlink(public_path('photos/image/' . $product->meta_image));
+             }
+             $file = $request->file('meta_image');
+             $filename = 'meta_' . time() . '.' . $file->getClientOriginalExtension();
+             $file->move(public_path('photos/image'), $filename);
+             $updateData['meta_image'] = $filename;
+         }
+     
+         // Handle visual images
+         if ($request->hasFile('visual_image')) {
+             // Delete existing visual images
+             $existingVisualImages = json_decode($product->visual_image, true);
+             if (is_array($existingVisualImages)) {
+                 foreach ($existingVisualImages as $image) {
+                     if (file_exists(public_path('photos/image/' . $image))) {
+                         unlink(public_path('photos/image/' . $image));
+                     }
+                 }
+             }
+     
+             // Store new visual images
+             $filenames = [];
+             foreach ($request->file('visual_image') as $file) {
+                 $filename = 'visual_' . time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                 $file->move(public_path('photos/image'), $filename);
+                 $filenames[] = $filename;
+             }
+             $updateData['visual_image'] = json_encode($filenames);
+         }
+     
+         // Update the product record
+         $product->update($updateData);
+     
+         // Update product categories
+         ProductCategory::where('product_id', $product->id)->delete();
+         foreach ($request->input('product_categories') as $categoryId) {
+             ProductCategory::create([
+                 'product_id' => $product->id,
+                 'category_id' => $categoryId
+             ]);
+         }
+     
+         // Redirect with a success message
+         return redirect()->route('productview')->with('status', 'Product Updated Successfully!');
+     }
+     
         
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    // public function delete(Request $request, $id)
-    // {
-
-    //     // delete product
-    //     try {
-
-    //         $product = Product::findOrFail($id);
-    //         $product->categories()->detach();
-    //         $product->delete();
-    //         return redirect()->back()->with('status', 'Product deleted successfully!');
-
-    //     } catch (\Exception $e) {
-    //         return redirect()->back()->withErrors(['error' => 'Failed to delete the product.']);
-    //     }
-    // }
-
-
+        
     public function delete(Request $request, $id)
 {
     // Find the product or fail
@@ -276,6 +283,7 @@ class ProductsController extends Controller
         // Define paths for product image and meta image
         $productImagePath = 'photos/image/' . $product->product_image;
         $metaImagePath = 'photos/image/' . $product->meta_image;
+        $visualImagePath = 'photos/image/' . $product->visual_image;
 
         // Delete product image if it exists
         if ($product->product_image && file_exists(public_path($productImagePath))) {
@@ -285,6 +293,21 @@ class ProductsController extends Controller
         // Delete meta image if it exists
         if ($product->meta_image && file_exists(public_path($metaImagePath))) {
             unlink(public_path($metaImagePath));
+        }
+
+        // Handle deletion of multiple visual images
+        if ($product->visual_image) {
+            $visualImages = json_decode($product->visual_image, true);
+            
+            if (is_array($visualImages)) {
+                foreach ($visualImages as $image) {
+                    $visualImagePath = 'photos/image/' . $image;
+                    
+                    if (file_exists(public_path($visualImagePath))) {
+                        unlink(public_path($visualImagePath));
+                    }
+                }
+            }
         }
 
         // Detach all related categories
